@@ -1,0 +1,27 @@
+.tile-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 50px;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  
+  .tile {
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .tile:hover {
+    box-shadow: 0 2px 10px #06ACB9; 
+    cursor: pointer;
+  }
+  
+  .tile:active {
+    box-shadow: 0 2px 2px #06ACB9;
+    transform: translateY(2px); 
+  }
+  
