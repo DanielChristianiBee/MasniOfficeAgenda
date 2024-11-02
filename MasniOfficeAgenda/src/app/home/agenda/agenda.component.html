@@ -1,1 +1,21 @@
-<p>agenda works!</p>
+<div *ngIf="!selectedDay" class="month-view">
+    <div class="month-navigation">
+      <button (click)="previousMonth()">Previous</button>
+      <h2>{{ currentMonth | date: 'MMMM yyyy' }}</h2>
+      <button (click)="nextMonth()">Next</button>
+    </div>
+    <div class="grid">
+      <div *ngFor="let day of daysInMonth" class="day" (click)="openDay(day)">
+        {{ day | date: 'd' }}
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="selectedDay" class="day-view">
+    <button (click)="closeDay()">Back to Month View</button>
+    <h2>{{ selectedDay | date: 'EEEE, MMM d, yyyy' }}</h2>
+    <div class="time-slots">
+      <div *ngFor="let time of timeSlots">{{ time }}</div>
+    </div>
+  </div>
+  

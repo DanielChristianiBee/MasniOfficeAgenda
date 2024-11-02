@@ -1,0 +1,119 @@
+.month-view, .day-view {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .month-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  
+    h2 {
+      flex: 1;
+      text-align: center;
+      font-size: 1.8em;
+      color: #333;
+    }
+  
+    button {
+      background-color: #00796b;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #004d40;
+      }
+    }
+  }
+  
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .day {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+  
+    &:hover {
+      background-color: #e0f7fa;
+      color: #00796b;
+    }
+  }
+  
+  .day.selected {
+    background-color: #00796b;
+    color: #fff;
+  }
+  
+  .day-view {
+    margin-top: 20px;
+  
+    button {
+      background-color: #00796b;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 15px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #004d40;
+      }
+    }
+  
+    h2 {
+      font-size: 1.6em;
+      color: #00796b;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .time-slots div {
+    padding: 8px 12px;
+    background-color: #e3f2fd;
+    color: #1e88e5;
+    border-radius: 4px;
+    font-size: 1em;
+    border: 1px solid #bbdefb;
+    transition: background-color 0.3s, color 0.3s;
+  
+    &:hover {
+      background-color: #1e88e5;
+      color: #fff;
+    }
+  }
+  
