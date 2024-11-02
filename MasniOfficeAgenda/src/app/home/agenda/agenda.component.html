@@ -1,21 +1,36 @@
 <div *ngIf="!selectedDay" class="month-view">
-    <div class="month-navigation">
-      <button (click)="previousMonth()">Previous</button>
-      <h2>{{ currentMonth | date: 'MMMM yyyy' }}</h2>
-      <button (click)="nextMonth()">Next</button>
+  <h2>{{ currentMonth | date: 'MMMM yyyy' }}</h2>
+  <button (click)="previousMonth()">Previous Month</button>
+  <button (click)="nextMonth()">Next Month</button>
+  <div class="grid">
+    <div *ngFor="let day of daysInMonth" class="day" (click)="openDay(day)">
+      {{ day | date: 'd' }}
     </div>
-    <div class="grid">
-      <div *ngFor="let day of daysInMonth" class="day" (click)="openDay(day)">
-        {{ day | date: 'd' }}
+  </div>
+</div>
+
+<div *ngIf="selectedDay" class="day-view">
+  <button (click)="closeDay()">Back to Month View</button>
+  <h2>{{ selectedDay | date: 'EEEE, MMM d, yyyy' }}</h2>
+  <div class="time-slots">
+    <div *ngFor="let time of timeSlots">
+      <div class="time-slot">
+        <div>{{ time.label }}</div>
+        <div *ngFor="let appointment of getAppointmentsForSelectedDay()">
+          <div *ngIf="isTimeInSlot(appointment.startTime, time)">
+            <strong>{{ appointment.title }}</strong>
+            <p>{{ appointment.description }}</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <div *ngIf="selectedDay" class="day-view">
-    <button (click)="closeDay()">Back to Month View</button>
-    <h2>{{ selectedDay | date: 'EEEE, MMM d, yyyy' }}</h2>
-    <div class="time-slots">
-      <div *ngFor="let time of timeSlots">{{ time }}</div>
+    <!-- Debugging Message -->
+    <div *ngIf="getAppointmentsForSelectedDay().length === 0">
+      No appointments for this day.
     </div>
   </div>
-  
+</div>
+
+<div class="tile" [routerLink]="['/add']">
+  <h1>Add Appointment</h1>
+</div>

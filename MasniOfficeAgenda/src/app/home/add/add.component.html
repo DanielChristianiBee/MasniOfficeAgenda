@@ -1,1 +1,24 @@
-<p>add works!</p>
+<form (ngSubmit)="addAppointment()">
+    <div>
+      <label for="date">Date:</label>
+      <input type="date" id="date" [(ngModel)]="date" name="date" required>
+    </div>
+    <div>
+      <label for="startTime">Start Time:</label>
+      <input type="time" id="startTime" [(ngModel)]="startTime" name="startTime" required>
+    </div>
+    <div>
+      <label for="endTime">End Time:</label>
+      <input type="time" id="endTime" [(ngModel)]="endTime" name="endTime" required>
+    </div>
+    <div>
+      <label for="title">Title:</label>
+      <input type="text" id="title" [(ngModel)]="title" name="title" required>
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="description" name="description" placeholder="Enter appointment description" required></textarea>
+    </div>
+    <button type="submit">Add Appointment</button>
+  </form>
+  
