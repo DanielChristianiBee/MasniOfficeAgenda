@@ -5,6 +5,8 @@ import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, Timestamp
 import { getAnalytics, isSupported } from 'firebase/analytics'; 
 import { Appointment } from './appointment.model';
 import { Observable } from 'rxjs';
+import { signOut } from 'firebase/auth';
+import { User } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJ4VU8NzNDGCSWE0zgPDpzW8jlmLVUwh8",
@@ -116,5 +118,20 @@ export class FirebaseService {
     } else {
       console.error("Error:", e);
     }
+  }
+
+  logout(): Promise<void> {
+    return signOut(this.auth)
+      .then(() => {
+        console.log('Logout successful');
+      })
+      .catch((error) => {
+        this.handleError(error);
+        throw new Error(error.message);
+      });
+  }
+
+  isLoggedIn(): boolean {
+    return this.auth.currentUser !== null; // Check if there's a logged-in user
   }
 }

@@ -1,3 +1,6 @@
-
+<header>
+    <button (click)="navigateToHome()" *ngIf="showHomeButton">Home</button>
+    <button (click)="logout()" *ngIf="showLogoutButton">Logout</button>
+  </header>
 
 <router-outlet />
