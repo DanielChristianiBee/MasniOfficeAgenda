@@ -13,20 +13,18 @@
   <button (click)="closeDay()">Back to Month View</button>
   <h2>{{ selectedDay | date: 'EEEE, MMM d, yyyy' }}</h2>
   <div class="time-slots">
-    <div *ngFor="let time of timeSlots">
-      <div class="time-slot">
-        <div>{{ time.label }}</div>
-        <div *ngFor="let appointment of getAppointmentsForSelectedDay()">
-          <div *ngIf="isTimeInSlot(appointment.startTime, time)">
-            <strong>{{ appointment.title }}</strong>
-            <p>{{ appointment.description }}</p>
-          </div>
+    <div *ngFor="let time of timeSlots" class="time-slot">
+      <div>{{ time.label }}</div>
+      <div *ngFor="let appointment of appointmentsForSelectedDay">
+        <div *ngIf="isTimeInSlot(appointment.startTime, time)">
+          <strong>{{ appointment.title }}</strong>
+          <p>{{ appointment.description }}</p>
         </div>
       </div>
-    </div>
-    <!-- Debugging Message -->
-    <div *ngIf="getAppointmentsForSelectedDay().length === 0">
-      No appointments for this day.
+      <!-- Debugging Message for No Appointment in This Time Slot -->
+      <div *ngIf="!areAppointmentsInTimeSlot(time)">
+        No appointments for this time slot.
+      </div>
     </div>
   </div>
 </div>
