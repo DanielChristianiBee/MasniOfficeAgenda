@@ -25,29 +25,35 @@ export class AddComponent {
   constructor(private firebaseService: FirebaseService) {} // Inject FirebaseService
 
   addAppointment() {
+    console.log('Add Appointment clicked'); // Debugging line
+  
     // Ensure all fields are filled out
     if (this.date && this.startTime && this.endTime && this.title && this.description) {
+      // Convert this.date to a Date object if it’s not already
+      const appointmentDate = new Date(this.date);
+  
+      // Construct the new appointment
       const newAppointment: Appointment = {
         id: uuidv4(), // Generate a unique ID
-        date: Timestamp.fromDate(this.date), // Convert the Date to Firestore Timestamp
+        date: Timestamp.fromDate(appointmentDate), // Convert the Date to Firestore Timestamp
         startTime: this.startTime,
         endTime: this.endTime,
         title: this.title,
         description: this.description,
       };
-
+  
+      // Add the appointment via Firebase service
       this.firebaseService.addAppointment(newAppointment).then(() => {
         this.appointmentAdded.emit(newAppointment); // Emit only after successful save
         this.resetForm();
       }).catch(error => {
         console.error('Error adding appointment: ', error);
-        // Handle error (e.g., show a message to the user)
       });
     } else {
       console.error('All fields are required');
-      // Handle invalid input case (show message or similar)
     }
   }
+  
 
   resetForm() {
     this.date = null; 
