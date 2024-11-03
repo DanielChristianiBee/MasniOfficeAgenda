@@ -6,9 +6,9 @@ import { AddComponent } from './home/add/add.component';
 import { AuthGuard } from './auth.guard'; 
 
 export const appRoutes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent }, 
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  }, 
   { path: 'agenda', component: AgendaComponent, canActivate: [AuthGuard] }, 
   { path: 'add', component: AddComponent, canActivate: [AuthGuard] } 
 ];
