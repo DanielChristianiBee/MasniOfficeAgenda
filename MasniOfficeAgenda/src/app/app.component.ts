@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { FirebaseService } from './firebase.service'; // Import your Firebase service
+import { FirebaseService } from './firebase.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -14,13 +14,16 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   title = 'MasniOfficeAgenda';
-  showHomeButton: boolean = false; // Flag for Home button visibility
-  showLogoutButton: boolean = false; // Flag for Logout button visibility
+  showHomeButton: boolean = false;
+  showLogoutButton: boolean = false;
 
   constructor(private router: Router, private firebaseService: FirebaseService) {}
 
   ngOnInit() {
-    // Subscribe to router events to control button visibility
+    // Explicitly set button visibility on initial load
+    this.updateButtonVisibility(this.router.url);
+
+    // Subscribe to NavigationEnd events to update visibility on route changes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -29,9 +32,10 @@ export class AppComponent implements OnInit {
   }
 
   private updateButtonVisibility(url: string) {
-    // Hide the Home and Logout buttons if the current URL is '/login'
-    this.showHomeButton = url !== '/login';
-    this.showLogoutButton = url !== '/login' && this.firebaseService.isLoggedIn(); // Assuming you have an isLoggedIn method
+    // Determine if the current route is the login page
+    const isLoginPage = url === '/login' || url === '/';
+    this.showHomeButton = !isLoginPage;
+    this.showLogoutButton = !isLoginPage && this.firebaseService.isLoggedIn();
   }
 
   navigateToHome() {
@@ -40,8 +44,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.firebaseService.logout().then(() => {
-      this.router.navigate(['/login'], { replaceUrl: true }); // Use replaceUrl to block back navigation
+      this.router.navigate(['/login'], { replaceUrl: true });
     });
   }
-  
 }

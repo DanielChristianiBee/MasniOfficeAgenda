@@ -14,8 +14,8 @@
   <h2>{{ selectedDay | date: 'EEEE, MMM d, yyyy' }}</h2>
   <div class="time-slots">
     <div *ngFor="let time of timeSlots" class="time-slot">
-      <div>{{ time.label }}</div>
-      <div *ngFor="let appointment of appointmentsForSelectedDay">
+      <div class="time-label">{{ time.label }}</div>
+      <div class="appointments" *ngFor="let appointment of appointmentsForSelectedDay">
         <div *ngIf="isTimeInSlot(appointment.startTime, time)">
           <strong>{{ appointment.title }}</strong>
           <p>{{ appointment.description }}</p>
@@ -29,6 +29,8 @@
   </div>
 </div>
 
-<div class="tile" [routerLink]="['/add']">
+<div class="add-appointment-container">
+<div class="add-appointment" [routerLink]="['/add']">
   <h1>Add Appointment</h1>
+</div>
 </div>
