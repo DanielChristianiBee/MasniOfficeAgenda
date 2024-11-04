@@ -75,12 +75,13 @@ export class AgendaComponent implements OnInit {
   }
 
   isTimeInSlot(startTime: string, time: { startTime: string, endTime: string }): boolean {
-    const appointmentStartTime = new Date(`1970-01-01T${startTime}:00`);
-    const slotStartTime = new Date(`1970-01-01T${time.startTime}:00`);
-    const slotEndTime = new Date(`1970-01-01T${time.endTime}:00`);
+    const appointmentStartTime = new Date(`1970-01-01T${startTime.padStart(5, '0')}:00`);
+    const slotStartTime = new Date(`1970-01-01T${time.startTime.padStart(5, '0')}:00`);
+    const slotEndTime = new Date(`1970-01-01T${time.endTime.padStart(5, '0')}:00`);
 
     return appointmentStartTime >= slotStartTime && appointmentStartTime < slotEndTime;
   }
+
 
   previousMonth() {
     this.currentMonth = subMonths(this.currentMonth, 1);
