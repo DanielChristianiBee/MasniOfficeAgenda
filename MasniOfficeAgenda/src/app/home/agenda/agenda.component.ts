@@ -65,7 +65,7 @@ export class AgendaComponent implements OnInit {
 
   generateTimeSlots() {
     this.timeSlots = Array.from({ length: 15 }, (_, i) => {
-      const hour = 7 + i;
+      const hour = 7 + i; // Creates time slots from 7:00 to 22:00
       return {
         label: `${hour}:00 - ${hour + 1}:00`,
         startTime: `${hour}:00`,
@@ -110,7 +110,7 @@ export class AgendaComponent implements OnInit {
     });
   }
 
-  areAppointmentsInTimeSlot(time: any): boolean {
+  areAppointmentsInTimeSlot(time: { startTime: string, endTime: string }): boolean {
     return this.appointmentsForSelectedDay.some(appointment =>
       this.isTimeInSlot(appointment.startTime, time)
     );

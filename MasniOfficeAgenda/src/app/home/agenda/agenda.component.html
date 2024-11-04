@@ -15,13 +15,14 @@
   <div class="time-slots">
     <div *ngFor="let time of timeSlots" class="time-slot">
       <div class="time-label">{{ time.label }}</div>
-      <div class="appointments" *ngFor="let appointment of appointmentsForSelectedDay">
-        <div *ngIf="isTimeInSlot(appointment.startTime, time)">
-          <strong>{{ appointment.title }}</strong>
-          <p>{{ appointment.description }}</p>
+      <div class="appointments" *ngIf="areAppointmentsInTimeSlot(time)">
+        <div *ngFor="let appointment of appointmentsForSelectedDay">
+          <div *ngIf="isTimeInSlot(appointment.startTime, time)">
+            <strong>{{ appointment.title }}</strong>
+            <p>{{ appointment.description }}</p>
+          </div>
         </div>
       </div>
-      <!-- Debugging Message for No Appointment in This Time Slot -->
       <div *ngIf="!areAppointmentsInTimeSlot(time)">
         No appointments for this time slot.
       </div>
@@ -30,7 +31,7 @@
 </div>
 
 <div class="add-appointment-container">
-<div class="add-appointment" [routerLink]="['/add']">
-  <h1>Add Appointment</h1>
-</div>
+  <div class="add-appointment" [routerLink]="['/add']">
+    <h1>Add Appointment</h1>
+  </div>
 </div>
