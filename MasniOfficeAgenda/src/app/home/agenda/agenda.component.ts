@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, subMonths, addMonths, isSameDay } from 'date-fns';
+import { startOfMonth, endOfMonth, eachDayOfInterval, subMonths, addMonths, isSameDay } from 'date-fns';
 import { CommonModule } from '@angular/common';
 import { FirebaseService } from '../../firebase.service';
 import { RouterLink } from '@angular/router';
-import { Appointment } from '../../appointment.model'; 
-import { getAnalytics, isSupported } from 'firebase/analytics'; 
-import { Observable } from 'rxjs';
+import { Appointment } from '../../appointment.model';
+import { isSupported } from 'firebase/analytics';
 import { Timestamp } from 'firebase/firestore';
 
 @Component({
@@ -20,19 +19,19 @@ export class AgendaComponent implements OnInit {
   daysInMonth: Date[] = [];
   selectedDay: Date | null = null;
   timeSlots: { label: string, startTime: string, endTime: string }[] = [];
-  appointments: Appointment[] = []; // Initialize appointments array
-  appointmentsForSelectedDay: Appointment[] = []; // Store appointments for the selected day
+  appointments: Appointment[] = [];
+  appointmentsForSelectedDay: Appointment[] = [];
 
   constructor(private firebaseService: FirebaseService) {}
 
   async ngOnInit() {
     const analyticsEnabled = await isSupported();
     if (analyticsEnabled) {
-      const analytics = getAnalytics();
+      // Initialize analytics if supported (if required for further functionality)
     }
-    
+
     this.generateMonthDays();
-    this.loadAppointments(); // Load appointments when the component initializes
+    this.loadAppointments();
   }
 
   generateMonthDays() {
@@ -44,7 +43,7 @@ export class AgendaComponent implements OnInit {
   loadAppointments() {
     this.firebaseService.getAppointments().subscribe({
       next: (data: Appointment[]) => {
-        this.appointments = data; 
+        this.appointments = data;
         console.log('Loaded appointments:', JSON.stringify(this.appointments, null, 2));
       },
       error: (error: any) => {
@@ -56,17 +55,17 @@ export class AgendaComponent implements OnInit {
   openDay(day: Date) {
     this.selectedDay = day;
     this.generateTimeSlots();
-    this.updateAppointmentsForSelectedDay(); // Update appointments for the selected day
+    this.updateAppointmentsForSelectedDay();
   }
 
   closeDay() {
     this.selectedDay = null;
-    this.appointmentsForSelectedDay = []; // Clear appointments when closing the day view
+    this.appointmentsForSelectedDay = [];
   }
 
   generateTimeSlots() {
     this.timeSlots = Array.from({ length: 15 }, (_, i) => {
-      const hour = 7 + i; // Adjust start hour as needed
+      const hour = 7 + i;
       return {
         label: `${hour}:00 - ${hour + 1}:00`,
         startTime: `${hour}:00`,
@@ -94,29 +93,25 @@ export class AgendaComponent implements OnInit {
   }
 
   updateAppointmentsForSelectedDay() {
-    this.appointmentsForSelectedDay = this.getAppointmentsForSelectedDay(); // Get appointments once and store
+    this.appointmentsForSelectedDay = this.getAppointmentsForSelectedDay();
   }
 
   getAppointmentsForSelectedDay(): Appointment[] {
     if (!this.selectedDay) return [];
-    
-    const selectedDayDate = new Date(this.selectedDay).setHours(0, 0, 0, 0); // Normalize to midnight
-    console.log('Selected Day:', selectedDayDate); // Log the selected day
-  
+
+    const selectedDayDate = new Date(this.selectedDay).setHours(0, 0, 0, 0);
+    console.log('Selected Day:', selectedDayDate);
+
     return this.appointments.filter(appointment => {
-      const appointmentDate = appointment.date instanceof Timestamp 
-        ? appointment.date.toDate().setHours(0, 0, 0, 0) // Normalize to midnight after conversion
-        : new Date(appointment.date).setHours(0, 0, 0, 0);
-  
-      console.log('Checking appointment date:', appointmentDate); // Log each appointment date
+      const appointmentDate = (appointment.date as Timestamp).toDate().setHours(0, 0, 0, 0);
+      console.log('Checking appointment date:', appointmentDate);
       return isSameDay(appointmentDate, selectedDayDate);
     });
   }
 
   areAppointmentsInTimeSlot(time: any): boolean {
-    return this.appointmentsForSelectedDay.some(appointment => 
+    return this.appointmentsForSelectedDay.some(appointment =>
       this.isTimeInSlot(appointment.startTime, time)
     );
   }
-  
 }

@@ -6,7 +6,7 @@ header {
     padding: 1rem;
     background-color: #0075ff;
     color: #ffffff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative; /* To help with centering */
 }
 
@@ -78,12 +78,12 @@ img {
         max-width: 80%; /* Make images smaller on mobile devices */
         height: auto; /* Maintain aspect ratio */
       }
-    
+
       /* Optional: further adjustments for specific images */
       img[src="./dog.png"] {
         max-height: 50px; /* Set a max height for the dog image */
       }
-    
+
       .logo {
         max-height: 50px; /* Set a smaller max height for the logo */
       }

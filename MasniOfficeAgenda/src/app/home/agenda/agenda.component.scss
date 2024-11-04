@@ -148,7 +148,7 @@ h2 {
   background-color: #ffaa64; /* Light green for time slots */
   color: black; /* Dark green text */
   border-radius: 5px;
-  
+
   transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -197,7 +197,6 @@ h2 {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  text-align: left;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
   align-items: center;
@@ -207,7 +206,7 @@ h2 {
     transform: translateY(-2px);
     cursor: pointer;
   }
-  
+
   /* Active effect */
   &:active {
     transform: translateY(2px);

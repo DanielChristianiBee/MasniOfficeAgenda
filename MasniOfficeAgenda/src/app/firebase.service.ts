@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, Timestamp } from 'firebase/firestore'; 
-import { getAnalytics, isSupported } from 'firebase/analytics'; 
+import { getFirestore, collection, addDoc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 import { Appointment } from './appointment.model';
 import { Observable } from 'rxjs';
 import { signOut } from 'firebase/auth';
-import { User } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJ4VU8NzNDGCSWE0zgPDpzW8jlmLVUwh8",
@@ -23,32 +22,33 @@ const firebaseConfig = {
 })
 export class FirebaseService {
   private app: any;
-  private analytics: any | null; 
   private auth: any;
-  private db: any; 
+  private db: any;
 
   constructor() {
     this.app = initializeApp(firebaseConfig);
-    isSupported().then((supported) => {
-      this.analytics = supported ? getAnalytics(this.app) : null; 
-    }).catch((error) => {
-      console.error("Analytics not supported:", error);
-      this.analytics = null; 
-    });
-
-    this.auth = getAuth(this.app);
-    this.db = getFirestore(this.app); 
-  }
-
-  login(email: string, password: string): Promise<void> {
-    return signInWithEmailAndPassword(this.auth, email, password)
-      .then(() => {
-        console.log('Login successful');
+    isSupported()
+      .then((supported) => {
+        if (supported) {
+          getAnalytics(this.app);
+        }
       })
       .catch((error) => {
-        this.handleError(error);
-        throw new Error(error.message);
+        console.error("Analytics not supported:", error);
       });
+
+    this.auth = getAuth(this.app);
+    this.db = getFirestore(this.app);
+  }
+
+  async login(email: string, password: string): Promise<void> {
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password);
+      console.log('Login successful');
+    } catch (error: unknown) {
+      this.handleError(error);
+      throw new Error(error instanceof Error ? error.message : "An unknown error occurred during login");
+    }
   }
 
   async addAppointment(appointment: Appointment): Promise<void> {
@@ -57,7 +57,7 @@ export class FirebaseService {
     }
     try {
       const docRef = await addDoc(collection(this.db, 'appointments'), {
-        date: appointment.date, // Keep as Timestamp
+        date: appointment.date,
         startTime: appointment.startTime,
         endTime: appointment.endTime,
         title: appointment.title,
@@ -77,7 +77,7 @@ export class FirebaseService {
         const appointments: Appointment[] = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-          date: doc.data()['date'] as Timestamp, // Keep as Timestamp
+          date: doc.data()['date'] as Timestamp,
           startTime: doc.data()['startTime'] as string,
           endTime: doc.data()['endTime'] as string,
           title: doc.data()['title'] as string,
@@ -88,28 +88,8 @@ export class FirebaseService {
         observer.error(error);
       });
 
-      return () => unsubscribe(); 
+      return () => unsubscribe();
     });
-  }
-
-  async updateAppointment(id: string, appointment: Appointment): Promise<void> {
-    if (!appointment.date) {
-      throw new Error("Appointment date is required");
-    }
-    try {
-      const appointmentRef = doc(this.db, 'appointments', id);
-      await updateDoc(appointmentRef, {
-        date: appointment.date, // Keep as Timestamp
-        startTime: appointment.startTime,
-        endTime: appointment.endTime,
-        title: appointment.title,
-        description: appointment.description,
-      });
-      console.log("Appointment updated with ID:", id);
-    } catch (e: unknown) {
-      this.handleError(e);
-      throw new Error("Error updating appointment: " + (e instanceof Error ? e.message : "Unknown error"));
-    }
   }
 
   private handleError(e: unknown): void {
@@ -120,18 +100,17 @@ export class FirebaseService {
     }
   }
 
-  logout(): Promise<void> {
-    return signOut(this.auth)
-      .then(() => {
-        console.log('Logout successful');
-      })
-      .catch((error) => {
-        this.handleError(error);
-        throw new Error(error.message);
-      });
+  async logout(): Promise<void> {
+    try {
+      await signOut(this.auth);
+      console.log('Logout successful');
+    } catch (error: unknown) {
+      this.handleError(error);
+      throw new Error(error instanceof Error ? error.message : "An unknown error occurred during logout");
+    }
   }
 
   isLoggedIn(): boolean {
-    return this.auth.currentUser !== null; // Check if there's a logged-in user
+    return this.auth.currentUser !== null;
   }
 }

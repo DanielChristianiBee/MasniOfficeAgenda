@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +22,12 @@ export class LoginComponent {
   login() {
     this.firebaseService.login(this.email, this.password)
       .then(() => {
-        this.router.navigate(['/home']); // Navigate on successful login
+        this.router.navigate(['/home']).catch(error => {
+          console.error('Navigation to home failed:', error);
+        });
       })
       .catch((error) => {
-        this.errorMessage = error.message; // Display error message
+        this.errorMessage = error.message;
       });
   }
 }

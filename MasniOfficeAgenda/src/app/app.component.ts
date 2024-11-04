@@ -17,7 +17,8 @@ export class AppComponent implements OnInit {
   showHomeButton: boolean = false;
   showLogoutButton: boolean = false;
 
-  constructor(private router: Router, private firebaseService: FirebaseService) {}
+  constructor(private router: Router, private firebaseService: FirebaseService) {
+  }
 
   ngOnInit() {
     // Explicitly set button visibility on initial load
@@ -39,12 +40,16 @@ export class AppComponent implements OnInit {
   }
 
   navigateToHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']).catch(error => {
+      console.error('Navigation to home failed:', error);
+    });
   }
 
   logout() {
     this.firebaseService.logout().then(() => {
-      this.router.navigate(['/login'], { replaceUrl: true });
+      this.router.navigate(['/login'], {replaceUrl: true}).catch(error => {
+        console.error('Navigation to login failed:', error);
+      });
     });
   }
 }
