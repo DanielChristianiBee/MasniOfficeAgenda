@@ -1,24 +1,27 @@
-<div>
+
   <h2>Food Planner</h2>
 
   <!-- Add Food Item Form -->
-  <div>
+  <div class="food-planner">
     <input [(ngModel)]="newFoodItem.name" placeholder="Dish Name" />
     <input [(ngModel)]="newFoodItem.description" placeholder="Description" />
-    <button (click)="addFoodItem()">Add Food Item</button>
+    <button class="clear-button" (click)="addFoodItem()">Add Food Item</button>
   </div>
 
   <!-- Food Items List -->
-  <div *ngIf="foodItems.length > 0">
+  <div *ngIf="foodItems.length > 0" class="food-planner">
     <h3>Food Items</h3>
     <ul>
       <li *ngFor="let item of foodItems">
         <span>{{ item.name }} ({{ item.description }})</span>
-        <button (click)="deleteFoodItem(item.id!)">Delete</button>
+        <div class="delete-button-container">
+        <button class="delete-button" (click)=deleteFoodItem(item.id!)>Delete</button>
+        </div>
       </li>
     </ul>
   </div>
 
   <!-- Clear All Button -->
-  <button (click)="clearAllItems()">Clear All Items</button>
-</div>
+  <div class="clear-button-container">
+  <button class="clear-button" (click)="clearAllItems()">Clear All Items</button>
+  </div>
