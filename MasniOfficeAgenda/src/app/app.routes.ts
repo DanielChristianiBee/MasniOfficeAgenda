@@ -7,10 +7,10 @@ import { AuthGuard } from './auth.guard';
 import { FoodPlannerComponent} from './home/foodplanner/foodplanner.component';
 
 export const appRoutes: Routes = [
-  { path: '', redirectTo: '/foodplanner', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
   { path: 'agenda', component: AgendaComponent, canActivate: [AuthGuard] },
   { path: 'add', component: AddComponent, canActivate: [AuthGuard] },
-  { path: 'foodplanner', component: FoodPlannerComponent}
+  { path: 'foodplanner', component: FoodPlannerComponent, canActivate: [AuthGuard] }
 ];
