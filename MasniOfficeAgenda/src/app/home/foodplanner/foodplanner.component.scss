@@ -77,11 +77,24 @@ li {
   border: 1px solid black;
   border-radius: 5px;
   margin-top: 5px;
+  cursor: pointer;
+
+  &.used {
+    background-color: #7cb849; // Gray background for used items
+    text-decoration: line-through; // Line-through for used items
+    color: black;
+  }
+
+  // Ensure delete button doesn't inherit line-through
+  .delete-button {
+    text-decoration: none !important; // Prevent line-through on delete button
+  }
 }
 
 li span {
   font-weight: bold;
 }
+
 
 .clear-button-container {
   display: block; /* Block display */

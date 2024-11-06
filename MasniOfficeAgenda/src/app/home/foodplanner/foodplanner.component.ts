@@ -4,6 +4,8 @@ import { FoodItem } from '../../food-item.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+
+
 @Component({
   selector: 'app-foodplanner',
   standalone: true,  // Mark this component as standalone
@@ -13,13 +15,12 @@ import { FormsModule } from '@angular/forms';
 })
 export class FoodPlannerComponent implements OnInit {
   foodItems: FoodItem[] = [];
-  newFoodItem: FoodItem = { name: '', description: '', userId: '' };  // Removed 'quantity'
-  userId: string = 'user123';  // Define userId as a class property
+  newFoodItem: FoodItem = { name: '', description: '', userId: '', used: false };
+  userId: string = 'user123';
 
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit(): void {
-    // Fetch food items for the logged-in user
     this.firebaseService.getFoodItems(this.userId).then((items) => {
       this.foodItems = items;
     });
@@ -27,35 +28,32 @@ export class FoodPlannerComponent implements OnInit {
 
   addFoodItem(): void {
     if (this.newFoodItem.name) {
-      this.newFoodItem.userId = this.userId;  // Use class-level userId
+      this.newFoodItem.userId = this.userId;
       this.firebaseService.addFoodItem(this.newFoodItem)
         .then(() => {
-          this.foodItems.push(this.newFoodItem);
-          this.newFoodItem = { name: '', description: '', userId: '' };  // Reset form
+          this.foodItems.push({...this.newFoodItem});
+          this.newFoodItem = { name: '', description: '', userId: '', used: false };
         });
     }
   }
 
-  updateFoodItem(foodItem: FoodItem): void {
-    this.firebaseService.updateFoodItem(foodItem.id!, foodItem)
-      .then(() => {
-        console.log("Food item updated successfully");
-      });
+  toggleUsed(foodItem: FoodItem): void {
+    foodItem.used = !foodItem.used; // Toggle the used status
+    this.firebaseService.updateFoodItem(foodItem.id!, foodItem); // Update in Firebase
   }
 
   deleteFoodItem(foodItemId: string): void {
     this.firebaseService.deleteFoodItem(foodItemId)
       .then(() => {
         this.foodItems = this.foodItems.filter(item => item.id !== foodItemId);
-        console.log("Food item deleted");
       });
   }
 
   clearAllItems(): void {
-    this.firebaseService.clearFoodItems(this.userId)  // Use class-level userId
+    this.firebaseService.clearFoodItems(this.userId)
       .then(() => {
         this.foodItems = [];
-        console.log("All food items cleared");
       });
   }
 }
+

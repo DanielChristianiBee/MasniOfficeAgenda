@@ -1,18 +1,22 @@
+// food-item.model.ts
 export class FoodItem {
-  id?: string;  // Firestore document ID (optional, for Firebase use)
+  id?: string;
   name: string;
   description: string;
-  userId: string;  // The user who added the item
+  userId: string;
+  used: boolean;
 
   constructor(
     name: string,
     description: string,
     userId: string,
-    id?: string
+    id?: string,
+    used: boolean = false
   ) {
     this.name = name;
     this.description = description;
     this.userId = userId;
+    this.used = used;
     if (id) {
       this.id = id;
     }

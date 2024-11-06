@@ -12,13 +12,16 @@
   <div *ngIf="foodItems.length > 0" class="food-planner">
     <h3>Food Items</h3>
     <ul>
-      <li *ngFor="let item of foodItems">
+      <li *ngFor="let item of foodItems"
+          [class.used]="item.used"
+          (click)="toggleUsed(item)">
         <span>{{ item.name }} ({{ item.description }})</span>
         <div class="delete-button-container">
-        <button class="delete-button" (click)=deleteFoodItem(item.id!)>Delete</button>
+          <button class="delete-button" (click)="deleteFoodItem(item.id!); $event.stopPropagation()">Delete</button>
         </div>
       </li>
     </ul>
+
   </div>
 
   <!-- Clear All Button -->

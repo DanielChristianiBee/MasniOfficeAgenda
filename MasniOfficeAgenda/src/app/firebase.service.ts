@@ -128,7 +128,6 @@ export class FirebaseService {
     }
   }
 
-
   async getFoodItems(userId: string): Promise<FoodItem[]> {
     const foodItemsCollection = collection(this.db, 'foodItems');
     const querySnapshot = await getDocs(foodItemsCollection);
@@ -147,6 +146,7 @@ export class FirebaseService {
       name: updatedFoodItem.name,
       description: updatedFoodItem.description,
       userId: updatedFoodItem.userId,
+      used: updatedFoodItem.used // Include "used" property in the update
     });
     console.log("Food item updated:", id);
   }
