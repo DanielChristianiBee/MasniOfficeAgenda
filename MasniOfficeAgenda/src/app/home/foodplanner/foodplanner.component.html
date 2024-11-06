@@ -1,0 +1,24 @@
+<div>
+  <h2>Food Planner</h2>
+
+  <!-- Add Food Item Form -->
+  <div>
+    <input [(ngModel)]="newFoodItem.name" placeholder="Dish Name" />
+    <input [(ngModel)]="newFoodItem.description" placeholder="Description" />
+    <button (click)="addFoodItem()">Add Food Item</button>
+  </div>
+
+  <!-- Food Items List -->
+  <div *ngIf="foodItems.length > 0">
+    <h3>Food Items</h3>
+    <ul>
+      <li *ngFor="let item of foodItems">
+        <span>{{ item.name }} ({{ item.description }})</span>
+        <button (click)="deleteFoodItem(item.id!)">Delete</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Clear All Button -->
+  <button (click)="clearAllItems()">Clear All Items</button>
+</div>
