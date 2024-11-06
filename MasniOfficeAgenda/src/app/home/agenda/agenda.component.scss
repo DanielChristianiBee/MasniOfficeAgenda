@@ -199,21 +199,13 @@ h2 {
   transition: background-color 0.3s, transform 0.3s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   text-align: center;
-  align-items: center;
   display: block;
 
   &:hover {
     transform: translateY(-2px);
     cursor: pointer;
   }
-
-  /* Active effect */
-  &:active {
-    transform: translateY(2px);
-  }
 }
-
-
 
 /* Responsive Design */
 @media (max-width: 600px) {

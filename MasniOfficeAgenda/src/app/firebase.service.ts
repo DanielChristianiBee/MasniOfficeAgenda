@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, collection, addDoc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getFirestore, collection, addDoc, onSnapshot, Timestamp, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
 import { Appointment } from './appointment.model';
 import { Observable } from 'rxjs';
-import { signOut } from 'firebase/auth';
+import { FoodItem } from './food-item.model';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJ4VU8NzNDGCSWE0zgPDpzW8jlmLVUwh8",
@@ -112,5 +112,59 @@ export class FirebaseService {
 
   isLoggedIn(): boolean {
     return this.auth.currentUser !== null;
+  }
+
+  async addFoodItem(foodItem: FoodItem): Promise<void> {
+    try {
+      const docRef = await addDoc(collection(this.db, 'foodItems'), {
+        name: foodItem.name,
+        description: foodItem.description,
+        userId: foodItem.userId ?? "",  // Ensure userId is never undefined
+      });
+      console.log("Food item added with ID:", docRef.id);
+      foodItem.id = docRef.id; // Set the id of the FoodItem
+    } catch (e: unknown) {
+      console.error("Error adding food item:", e);
+    }
+  }
+
+  async getFoodItems(userId: string): Promise<FoodItem[]> {
+    const foodItemsCollection = collection(this.db, 'foodItems');
+    const querySnapshot = await getDocs(foodItemsCollection);
+    const foodItems: FoodItem[] = [];
+    querySnapshot.forEach((doc) => {
+      if (doc.data()['userId'] === userId) {
+        foodItems.push({id: doc.id, ...doc.data() as FoodItem});
+      }
+    });
+    return foodItems;
+  }
+
+  async updateFoodItem(id: string, updatedFoodItem: FoodItem): Promise<void> {
+    const foodItemRef = doc(this.db, 'foodItems', id);
+    await updateDoc(foodItemRef, {
+      name: updatedFoodItem.name,
+      description: updatedFoodItem.description,
+      userId: updatedFoodItem.userId,
+      used: updatedFoodItem.used // Include "used" property in the update
+    });
+    console.log("Food item updated:", id);
+  }
+
+  async deleteFoodItem(id: string): Promise<void> {
+    const foodItemRef = doc(this.db, 'foodItems', id);
+    await deleteDoc(foodItemRef);
+    console.log("Food item deleted:", id);
+  }
+
+  async clearFoodItems(userId: string): Promise<void> {
+    const foodItems = await this.getFoodItems(userId);
+    for (const item of foodItems) {
+      if (item.id) { // Ensure that item.id is not undefined or null
+        await this.deleteFoodItem(item.id);
+      } else {
+        console.error("Food item does not have a valid ID:", item);
+      }
+    }
   }
 }
