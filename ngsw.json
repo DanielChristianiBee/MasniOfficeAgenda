@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1731106100664,
+  "timestamp": 1731106866283,
   "index": "/MasniOfficeAgenda/index.html",
   "assetGroups": [
     {
@@ -54,12 +54,12 @@
     "/MasniOfficeAgenda/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
     "/MasniOfficeAgenda/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
     "/MasniOfficeAgenda/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
-    "/MasniOfficeAgenda/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/MasniOfficeAgenda/icons/icon-192x192.png": "467b352be24501ac33a15e79aab62a7d5fd2e09a",
     "/MasniOfficeAgenda/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
-    "/MasniOfficeAgenda/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/MasniOfficeAgenda/icons/icon-512x512.png": "7645502f463d3277472a25f2a62c1b08b8a5f697",
     "/MasniOfficeAgenda/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/MasniOfficeAgenda/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/MasniOfficeAgenda/index.html": "3ed25972499887c99b67e003901301b641ae1499",
+    "/MasniOfficeAgenda/index.html": "c9bc75ea561ac9e60687811e27870047d3f3565d",
     "/MasniOfficeAgenda/logout.png": "620b4f06bdd561ae82b8555bf083509fd1e29384",
     "/MasniOfficeAgenda/main.93db3fbc642dcb67.js": "590df7be0bea9451df313560b34a857b970c351a",
     "/MasniOfficeAgenda/manifest.webmanifest": "8359416a734d9eaf3416c2229f29a9ff3f02ae97",
